@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
+import java.util.Properties;
 
 /**
  * @author Eric Zhao
@@ -38,6 +39,9 @@ public class NacosConfig {
     @Value("${nacos.addr:localhost}")
     private String addr;
 
+    @Value("${nacos.namespace:public}")
+    private String namespace;
+
     @Bean
     public Converter<List<FlowRuleEntity>, String> flowRuleEntityEncoder() {
         return JSON::toJSONString;
@@ -50,6 +54,9 @@ public class NacosConfig {
 
     @Bean
     public ConfigService nacosConfigService() throws Exception {
-        return ConfigFactory.createConfigService(addr);
+        Properties properties = new Properties();
+        properties.setProperty("serverAddr", addr);
+        properties.setProperty("namespace", namespace);
+        return ConfigFactory.createConfigService(properties);
     }
 }
