@@ -26,10 +26,13 @@ import com.alibaba.csp.sentinel.dashboard.domain.vo.gateway.api.AddApiReqVo;
 import com.alibaba.csp.sentinel.dashboard.domain.vo.gateway.api.ApiPredicateItemVo;
 import com.alibaba.csp.sentinel.dashboard.domain.vo.gateway.api.UpdateApiReqVo;
 import com.alibaba.csp.sentinel.dashboard.repository.gateway.InMemApiDefinitionStore;
+import com.alibaba.csp.sentinel.dashboard.rule.DynamicRuleProvider;
+import com.alibaba.csp.sentinel.dashboard.rule.DynamicRulePublisher;
 import com.alibaba.csp.sentinel.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,7 +57,12 @@ public class GatewayApiController {
     private InMemApiDefinitionStore repository;
 
     @Autowired
-    private SentinelApiClient sentinelApiClient;
+    @Qualifier("gatewayApiNacosProvider")
+    private DynamicRuleProvider<List<ApiDefinitionEntity>> ruleProvider;
+
+    @Autowired
+    @Qualifier("gatewayApiNacosPublisher")
+    private DynamicRulePublisher<List<ApiDefinitionEntity>> rulePublisher;
 
     @GetMapping("/list.json")
     @AuthAction(AuthService.PrivilegeType.READ_RULE)
@@ -71,8 +79,15 @@ public class GatewayApiController {
         }
 
         try {
-            List<ApiDefinitionEntity> apis = sentinelApiClient.fetchApis(app, ip, port).get();
-            repository.saveAll(apis);
+            List<ApiDefinitionEntity> apis = ruleProvider.getRules(app);
+            if (!CollectionUtils.isEmpty(apis)) {
+                for (ApiDefinitionEntity rule : apis) {
+                    rule.setApp(app.trim());
+                    rule.setIp(ip);
+                    rule.setPort(port);
+                }
+                repository.saveAll(apis);
+            }
             return Result.ofSuccess(apis);
         } catch (Throwable throwable) {
             logger.error("queryApis error:", throwable);
@@ -150,15 +165,20 @@ public class GatewayApiController {
         entity.setGmtModified(date);
 
         try {
+            // 设置ID
+            List<ApiDefinitionEntity> rules = ruleProvider.getRules(entity.getApp());
+            if (!CollectionUtils.isEmpty(rules)) {
+                Optional<ApiDefinitionEntity> apiRule = rules.stream().max(Comparator.comparingLong(ApiDefinitionEntity::getId));
+                entity.setId(apiRule.get().getId() + 1L);
+            }
+
             entity = repository.save(entity);
         } catch (Throwable throwable) {
             logger.error("add gateway api error:", throwable);
             return Result.ofThrowable(-1, throwable);
         }
 
-        if (!publishApis(app, ip, port)) {
-            logger.warn("publish gateway apis fail after add");
-        }
+        publishApis(app);
 
         return Result.ofSuccess(entity);
     }
@@ -219,9 +239,10 @@ public class GatewayApiController {
             return Result.ofThrowable(-1, throwable);
         }
 
-        if (!publishApis(app, entity.getIp(), entity.getPort())) {
-            logger.warn("publish gateway apis fail after update");
-        }
+//        if (!publishApis(app, entity.getIp(), entity.getPort())) {
+//            logger.warn("publish gateway apis fail after update");
+//        }
+        publishApis(app);
 
         return Result.ofSuccess(entity);
     }
@@ -246,15 +267,25 @@ public class GatewayApiController {
             return Result.ofThrowable(-1, throwable);
         }
 
-        if (!publishApis(oldEntity.getApp(), oldEntity.getIp(), oldEntity.getPort())) {
-            logger.warn("publish gateway apis fail after delete");
-        }
+//        if (!publishApis(oldEntity.getApp(), oldEntity.getIp(), oldEntity.getPort())) {
+//            logger.warn("publish gateway apis fail after delete");
+//        }
+        publishApis(oldEntity.getApp());
 
         return Result.ofSuccess(id);
     }
 
-    private boolean publishApis(String app, String ip, Integer port) {
-        List<ApiDefinitionEntity> apis = repository.findAllByMachine(MachineInfo.of(app, ip, port));
-        return sentinelApiClient.modifyApis(app, ip, port, apis);
+    /**
+     * 将API分组管理规则推送到Nacos
+     *
+     * @param app
+     */
+    private void publishApis(String app) {
+        List<ApiDefinitionEntity> apis = repository.findAllByApp(app);
+        try {
+            rulePublisher.publish(app, apis);
+        } catch (Exception e) {
+            logger.warn("publish gateway apis fail, the exception is {}", e);
+        }
     }
 }
