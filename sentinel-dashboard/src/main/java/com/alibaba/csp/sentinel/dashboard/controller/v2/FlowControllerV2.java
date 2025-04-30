@@ -221,7 +221,7 @@ public class FlowControllerV2 {
         return Result.ofSuccess(id);
     }
 
-    private void publishRules(/*@NonNull*/ String app) throws Exception {
+    private void publishRules(String app) throws Exception {
         List<FlowRuleEntity> rules = repository.findAllByApp(app);
         rulePublisher.publish(app, rules);
     }
