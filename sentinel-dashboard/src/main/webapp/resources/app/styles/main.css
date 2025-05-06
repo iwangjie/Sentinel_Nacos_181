@@ -21,23 +21,34 @@ body {
 
 /* Variables (Optional but recommended for larger projects) */
 :root {
-    --primary-color: #337ab7;
-    --primary-color-rgb: 51, 122, 183;
-    --success-color: #28a745;
-    --info-color: #17a2b8; /* Updated info color */
-    --warning-color: #ffc107;
-    --danger-color: #dc3545;
-    --light-gray: #f8f9fa;
-    --medium-gray: #e9ecef;
-    --dark-gray: #6c757d;
-    --border-color: #dee2e6;
-    --text-color: #212529;
-    --text-muted: #6c757d;
-    --link-color: var(--primary-color);
+    /* 主色 – 柔和靛蓝（Indigo 500 的低饱和版） */
+    --primary-color: #3f5efb;          /* HSL 237,96%,60% &rarr; 把饱和度降至 75% */
+    --primary-color-rgb: 63, 94, 251;
+
+    /* 状态色（来自 Tailwind & Material Design，经柔化处理） */
+    --success-color: #3cb371;          /* MediumSeaGreen，沉稳且易读 */
+    --warning-color: #d89d25;          /* 柔和琥珀 Amber 600 降饱和 */
+    --danger-color: #e04455;           /* 珊瑚红，较 Material Red 500 更温和 */
+    --info-color: #2aa7e0;             /* 天空蓝 Sky 500 */
+
+    /* 灰阶（使用 LCH 均匀递进，文字对比更平滑） */
+    --light-gray:  #f7f8fa;            /* L&asymp;96 */
+    --medium-gray: #e5e7eb;            /* L&asymp;88 */
+    --border-color: #d1d5db;           /* L&asymp;82 */
+    --dark-gray:   #6b7280;            /* L&asymp;50 */
+
+    /* 通用文本与链接 */
+    --text-color:  #1f2937;            /* 石墨灰，L&asymp;22，阅读舒适 */
+    --text-muted:  #6b7280;            /* 与 --dark-gray 保持一致 */
+    --link-color:  var(--primary-color);
+
+    /* 卡片 & 边框 */
     --card-bg: #ffffff;
     --card-border-color: var(--border-color);
-    --card-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    --border-radius: 0.25rem; /* Consistent border radius */
+    --card-box-shadow: 0 1px 3px rgba(17, 24, 39, 0.06);
+
+    /* 统一圆角 */
+    --border-radius: 0.375rem;         /* 6 px，更柔和 */
 }
 
 /* Typography */
