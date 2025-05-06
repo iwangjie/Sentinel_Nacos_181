@@ -289,6 +289,66 @@ body {
     left: auto; /* Align to the right */
 }
 
+/* 侧边栏搜索整体微调，更加紧凑、协调 */
+.sidebar-search .input-group {
+    margin: 10px 10px 15px 10px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    border: 1px solid #444c56;
+    padding: 0 4px;
+    transition: border-color 0.2s;
+}
+.sidebar-search .form-control {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: #fff;
+    font-size: 13px;
+    height: 32px; /* 稍微缩小 */
+    padding-right: 0;
+    padding-left: 0;
+}
+.sidebar-search .form-control::placeholder {
+    color: #bbbbbb;
+    opacity: 1;
+    font-size: 13px;
+}
+
+/* 鼠标聚焦时 */
+.sidebar-search .form-control:focus {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    outline: none;
+}
+
+.sidebar-search .input-group-btn .btn {
+    border: none;
+    background: none;
+    box-shadow: none;
+    color: #fff;
+    height: 32px;
+    line-height: 32px;
+    font-size: 13px;
+    padding: 0 12px;
+    transition: background 0.2s;
+    border-radius: 0 4px 4px 0;
+}
+
+/* 鼠标悬停按钮高亮 */
+.sidebar-search .input-group-btn .btn:hover,
+.sidebar-search .input-group-btn .btn:focus {
+    background-color: var(--primary-color, #337ab7);
+    color: #fff;
+}
+/* 去掉 focus 边框 */
+.sidebar-search .input-group-btn .btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+
 /* Deprecated Panel Colors (If they are still used anywhere) */
 /* Use utility classes like .bg-success, .text-white, .border-success instead */
 .panel-green { border-color: var(--success-color); }
