@@ -31,6 +31,6 @@ public class InMemDegradeRuleStore extends InMemoryRuleRepositoryAdapter<Degrade
 
     @Override
     protected long nextId() {
-        return UUID.randomUUID().toString().hashCode() & 0x7fffffff;
+        return System.nanoTime();
     }
 }

@@ -34,6 +34,6 @@ public class InMemAuthorityRuleStore extends InMemoryRuleRepositoryAdapter<Autho
 
     @Override
     protected long nextId() {
-        return UUID.randomUUID().toString().hashCode() & 0x7fffffff;
+        return System.nanoTime();
     }
 }
