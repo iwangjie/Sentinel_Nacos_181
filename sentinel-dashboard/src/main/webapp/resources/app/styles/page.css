@@ -137,7 +137,7 @@ body {
 /* --- Active State --- */
 .sidebar .nav > li.active > a {
     color: #ffffff;
-    background-color: var(--primary-color);
+    /*background-color: var(--primary-color);*/
 }
 /* Ensure text color contrasts in active state */
 .sidebar .nav > li.active > a .menu-text,
@@ -176,7 +176,6 @@ body {
     text-decoration: none;
 }
 
-.sidebar .nav > li.active > a,
 .sidebar .nav > li.active > a:hover,
 .sidebar .nav > li.active > a:focus {
     color: #ffffff;
