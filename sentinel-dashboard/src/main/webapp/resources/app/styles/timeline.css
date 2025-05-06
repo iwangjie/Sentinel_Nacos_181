@@ -1,180 +1,170 @@
+/*
+ * Modernized Timeline Component Styles
+ */
+
 .timeline {
-    position: relative;
-    padding: 20px 0 20px;
     list-style: none;
+    padding: 20px 0 20px;
+    position: relative;
 }
 
+/* The Central Line */
 .timeline:before {
-    content: " ";
-    position: absolute;
     top: 0;
     bottom: 0;
+    position: absolute;
+    content: " ";
+    width: 3px; /* Slightly thinner line */
+    background-color: #e9ecef; /* Lighter gray line */
     left: 50%;
-    width: 3px;
-    margin-left: -1.5px;
-    background-color: #eeeeee;
+    margin-left: -1.5px; /* Center the line */
 }
 
 .timeline > li {
-    position: relative;
     margin-bottom: 20px;
-}
-
-.timeline > li:before,
-.timeline > li:after {
-    content: " ";
-    display: table;
-}
-
-.timeline > li:after {
-    clear: both;
-}
-
-.timeline > li:before,
-.timeline > li:after {
-    content: " ";
-    display: table;
-}
-
-.timeline > li:after {
-    clear: both;
-}
-
-.timeline > li > .timeline-panel {
-    float: left;
     position: relative;
-    width: 46%;
-    padding: 20px;
-    border: 1px solid #d4d4d4;
-    border-radius: 2px;
-    -webkit-box-shadow: 0 1px 6px rgba(0,0,0,0.175);
-    box-shadow: 0 1px 6px rgba(0,0,0,0.175);
 }
 
-.timeline > li > .timeline-panel:before {
+/* Clearfix for floated elements */
+.timeline > li:before,
+.timeline > li:after {
     content: " ";
-    display: inline-block;
+    display: table;
+}
+.timeline > li:after {
+    clear: both;
+}
+
+/* Timeline Panel (The Box with Content) */
+.timeline > li > .timeline-panel {
+    width: 46%;
+    float: left;
+    padding: 20px;
+    position: relative;
+    background-color: #fff; /* Card background */
+    border-radius: var(--border-radius); /* Consistent radius */
+    border: 1px solid var(--border-color); /* Subtle border */
+    box-shadow: var(--card-box-shadow); /* Consistent shadow */
+}
+
+/* Arrow pointing to the central line */
+.timeline > li > .timeline-panel:before {
     position: absolute;
     top: 26px;
-    right: -15px;
-    border-top: 15px solid transparent;
-    border-right: 0 solid #ccc;
-    border-bottom: 15px solid transparent;
-    border-left: 15px solid #ccc;
-}
-
-.timeline > li > .timeline-panel:after {
-    content: " ";
+    right: -15px; /* Position arrow correctly */
     display: inline-block;
+    border-top: 15px solid transparent;
+    border-left: 15px solid var(--border-color); /* Match panel border */
+    border-right: 0 solid var(--border-color);
+    border-bottom: 15px solid transparent;
+    content: " ";
+}
+/* Inner arrow (white part) */
+.timeline > li > .timeline-panel:after {
     position: absolute;
     top: 27px;
-    right: -14px;
+    right: -14px; /* Position slightly inside */
+    display: inline-block;
     border-top: 14px solid transparent;
+    border-left: 14px solid #fff; /* Match panel background */
     border-right: 0 solid #fff;
     border-bottom: 14px solid transparent;
-    border-left: 14px solid #fff;
+    content: " ";
 }
 
+/* Timeline Badge (The Circle on the Line) */
 .timeline > li > .timeline-badge {
-    z-index: 100;
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    line-height: 50px; /* Center icon vertically */
+    font-size: 1.4em;
+    text-align: center;
     position: absolute;
     top: 16px;
     left: 50%;
-    width: 50px;
-    height: 50px;
-    margin-left: -25px;
-    border-radius: 50% 50% 50% 50%;
-    text-align: center;
-    font-size: 1.4em;
-    line-height: 50px;
-    color: #fff;
-    background-color: #999999;
+    margin-left: -25px; /* Center horizontally */
+    background-color: #adb5bd; /* Default gray badge */
+    z-index: 100; /* Ensure it's above the line */
+    border-radius: 50%; /* Make it a circle */
+    border: 3px solid #f8f9fa; /* Add border matching page background */
 }
 
+/* Right-aligned Timeline Items */
 .timeline > li.timeline-inverted > .timeline-panel {
     float: right;
 }
-
 .timeline > li.timeline-inverted > .timeline-panel:before {
-    right: auto;
-    left: -15px;
+    border-left-width: 0;
     border-right-width: 15px;
-    border-left-width: 0;
-}
-
-.timeline > li.timeline-inverted > .timeline-panel:after {
+    left: -15px;
     right: auto;
-    left: -14px;
-    border-right-width: 14px;
+}
+.timeline > li.timeline-inverted > .timeline-panel:after {
     border-left-width: 0;
+    border-right-width: 14px;
+    left: -14px;
+    right: auto;
 }
 
-.timeline-badge.primary {
-    background-color: #2e6da4 !important;
-}
+/* Badge Color Variations */
+.timeline-badge.primary { background-color: var(--primary-color) !important; }
+.timeline-badge.success { background-color: var(--success-color) !important; }
+.timeline-badge.warning { background-color: var(--warning-color) !important; }
+.timeline-badge.danger { background-color: var(--danger-color) !important; }
+.timeline-badge.info { background-color: var(--info-color) !important; }
 
-.timeline-badge.success {
-    background-color: #3f903f !important;
-}
-
-.timeline-badge.warning {
-    background-color: #f0ad4e !important;
-}
-
-.timeline-badge.danger {
-    background-color: #d9534f !important;
-}
-
-.timeline-badge.info {
-    background-color: #5bc0de !important;
-}
-
+/* Timeline Panel Content */
 .timeline-title {
     margin-top: 0;
-    color: inherit;
+    font-size: 1.1rem; /* Adjust title size */
+    font-weight: 500;
+    color: inherit; /* Inherit panel text color */
 }
-
 .timeline-body > p,
 .timeline-body > ul {
     margin-bottom: 0;
+    line-height: 1.5; /* Ensure consistent line height */
 }
-
 .timeline-body > p + p {
     margin-top: 5px;
 }
+.timeline-heading {
+    margin-bottom: 10px; /* Add space below heading */
+}
+.timeline-heading .text-muted {
+    font-size: 0.85rem; /* Smaller font for muted text like timestamps */
+    display: block; /* Make timestamp appear below title */
+    margin-top: 4px;
+}
 
-@media(max-width:767px) {
-    ul.timeline:before {
-        left: 40px;
+/* Responsive Adjustments */
+@media (max-width: 767px) {
+    .timeline:before {
+        left: 40px; /* Move line to the left */
     }
 
-    ul.timeline > li > .timeline-panel {
-        width: calc(100% - 90px);
-        width: -moz-calc(100% - 90px);
-        width: -webkit-calc(100% - 90px);
+    .timeline > li > .timeline-panel {
+        width: calc(100% - 80px); /* Adjust panel width */
+        float: right; /* All panels on the right */
     }
 
-    ul.timeline > li > .timeline-badge {
-        top: 16px;
-        left: 15px;
+    .timeline > li > .timeline-badge {
+        left: 15px; /* Position badge relative to the left line */
         margin-left: 0;
     }
 
-    ul.timeline > li > .timeline-panel {
-        float: right;
-    }
-
-    ul.timeline > li > .timeline-panel:before {
-        right: auto;
-        left: -15px;
+    /* Ensure arrows point left for all panels */
+    .timeline > li > .timeline-panel:before {
+        border-left-width: 0;
         border-right-width: 15px;
-        border-left-width: 0;
-    }
-
-    ul.timeline > li > .timeline-panel:after {
+        left: -15px;
         right: auto;
-        left: -14px;
-        border-right-width: 14px;
+    }
+    .timeline > li > .timeline-panel:after {
         border-left-width: 0;
+        border-right-width: 14px;
+        left: -14px;
+        right: auto;
     }
 }

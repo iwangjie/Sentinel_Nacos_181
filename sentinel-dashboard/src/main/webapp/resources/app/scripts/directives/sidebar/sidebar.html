@@ -10,13 +10,13 @@
         </div>
       </li>
       <li ui-sref-active="active">
-        <a ui-sref="dashboard.home" style="font-size:16px;">
+        <a ui-sref="dashboard.home" style="font-size:14px;">
           <span class="glyphicon glyphicon-dashboard"></span>
           &nbsp;&nbsp;首页</a>
       </li>
 
       <li ng-class="{active: true}" ng-repeat="entry in apps | filter: { app: searchApp }">{{dropDown}}
-        <a href="javascript:void(0);" ng-click="click($event)" collapse="{{collpaseall == 1}}" style="font-size: 16px;word-break: break-word;">
+        <a href="javascript:void(0);" ng-click="click($event)" collapse="{{collpaseall == 1}}" style="font-size: 13px;word-break: break-word;">
           &nbsp;{{entry.app}}
           <span class="fa arrow"></span>
           <span class="arrow">({{entry.healthyCount}}/{{entry.machines.length}})</span>
