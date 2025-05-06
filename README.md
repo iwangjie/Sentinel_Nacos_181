@@ -1,4 +1,10 @@
-<img src="https://user-images.githubusercontent.com/9434884/43697219-3cb4ef3a-9975-11e8-9a9c-73f4f537442d.png" alt="Sentinel Logo" width="50%">
+基于 Sentinel 1.8.1，集成 Nacos，默认所有规则均为集群模式，优化前端页面，如果对你有帮助，欢迎点一个 🌟，感谢！
+
+
+<img width="1675" alt="image" src="https://github.com/user-attachments/assets/22e6e666-68c5-4383-a3e7-0609689b41fa" />
+
+![Uploading image.png…]()
+
 
 # Sentinel: The Sentinel of Your Microservices
 
