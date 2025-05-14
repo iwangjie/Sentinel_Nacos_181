@@ -3,6 +3,8 @@ package com.alibaba.csp.sentinel.dashboard.rule.nacos;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.gateway.ApiDefinitionEntity;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.gateway.GatewayFlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.*;
+import com.alibaba.csp.sentinel.dashboard.rule.nacos.authority.define.AuthorityRuleCorrectEntity;
+import com.alibaba.csp.sentinel.dashboard.rule.nacos.param.define.ParamFlowRuleCorrectEntity;
 import com.alibaba.csp.sentinel.datasource.Converter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.PropertyKeyConst;
@@ -64,6 +66,17 @@ public class NacosConfig {
         return s -> JSON.parseArray(s, AuthorityRuleEntity.class);
     }
 
+    @Bean
+    public Converter<java.util.List<AuthorityRuleCorrectEntity>, String> authorityRuleCorrectEntityEncoder() {
+        return JSON::toJSONString;
+    }
+
+    @Bean
+    public Converter<String, java.util.List<AuthorityRuleCorrectEntity>> authorityRuleCorrectEntityDecoder() {
+        return s -> JSON.parseArray(s, AuthorityRuleCorrectEntity.class);
+    }
+
+
     /**
      * 降级规则
      *
@@ -85,13 +98,25 @@ public class NacosConfig {
      * @return
      */
     @Bean
+    @Deprecated
     public Converter<List<ParamFlowRuleEntity>, String> paramRuleEntityEncoder() {
         return JSON::toJSONString;
     }
 
     @Bean
+    @Deprecated
     public Converter<String, List<ParamFlowRuleEntity>> paramRuleEntityDecoder() {
         return s -> JSON.parseArray(s, ParamFlowRuleEntity.class);
+    }
+
+    @Bean
+    public Converter<List<ParamFlowRuleCorrectEntity>, String> paramFlowRuleCorrectEntityEncoder() {
+        return JSON::toJSONString;
+    }
+
+    @Bean
+    public Converter<String, List<ParamFlowRuleCorrectEntity>> paramFlowRuleCorrectEntityDecoder() {
+        return s -> JSON.parseArray(s, ParamFlowRuleCorrectEntity.class);
     }
 
 
