@@ -33,6 +33,7 @@ public class NacosConfig {
     @Value("${nacos.password:}")
     private String password;
 
+
     /**
      * 流控规则
      *
@@ -92,6 +93,7 @@ public class NacosConfig {
     public Converter<String, List<ParamFlowRuleEntity>> paramRuleEntityDecoder() {
         return s -> JSON.parseArray(s, ParamFlowRuleEntity.class);
     }
+
 
     /**
      * 系统规则

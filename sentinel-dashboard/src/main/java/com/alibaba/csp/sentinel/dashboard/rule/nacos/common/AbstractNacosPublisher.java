@@ -41,33 +41,40 @@ public abstract class AbstractNacosPublisher<R>
         }
 
         String dataId = postfix().dataId(app);
-        CountDownLatch latch = new CountDownLatch(1);
+        boolean ok = configService.publishConfig(
+                dataId, NacosConfigUtil.GROUP_ID, encoder.convert(rules));
+//
+//        if (!ok || !latch.await(10, TimeUnit.SECONDS)) {
+//            throw new RuntimeException("Publish " + dataId + " timeout, please retry.");
+//        }
 
-        Listener listener = new Listener() {
-            @Override
-            public Executor getExecutor() {
-                return null;
-            }
+//        CountDownLatch latch = new CountDownLatch(1);
+//
+//        Listener listener = new Listener() {
+//            @Override
+//            public Executor getExecutor() {
+//                return null;
+//            }
+//
+//            @Override
+//            public void receiveConfigInfo(String config) {
+//                latch.countDown();
+//            }
+//        };
 
-            @Override
-            public void receiveConfigInfo(String config) {
-                latch.countDown();
-            }
-        };
-
-        try {
-            // 先注册监听，再发布
-            configService.addListener(dataId, NacosConfigUtil.GROUP_ID, listener);
-
-            boolean ok = configService.publishConfig(
-                    dataId, NacosConfigUtil.GROUP_ID, encoder.convert(rules));
-
-            if (!ok || !latch.await(10, TimeUnit.SECONDS)) {
-                throw new RuntimeException("Publish " + dataId + " timeout, please retry.");
-            }
-        } finally {
-            // 防止 Listener 泄漏
-            configService.removeListener(dataId, NacosConfigUtil.GROUP_ID, listener);
-        }
+//        try {
+//            // 先注册监听，再发布
+//            configService.addListener(dataId, NacosConfigUtil.GROUP_ID, listener);
+//
+//            boolean ok = configService.publishConfig(
+//                    dataId, NacosConfigUtil.GROUP_ID, encoder.convert(rules));
+//
+//            if (!ok || !latch.await(10, TimeUnit.SECONDS)) {
+//                throw new RuntimeException("Publish " + dataId + " timeout, please retry.");
+//            }
+//        } finally {
+//            // 防止 Listener 泄漏
+//            configService.removeListener(dataId, NacosConfigUtil.GROUP_ID, listener);
+//        }
     }
 }
