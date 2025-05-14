@@ -86,9 +86,9 @@ app.controller('FlowControllerV2', ['$scope', '$stateParams', 'FlowServiceV2', '
         ip: mac[0],
         port: mac[1],
         limitApp: 'default',
-        clusterMode: false,
+        clusterMode: true,
         clusterConfig: {
-          thresholdType: 0,
+          thresholdType: 1,
           fallbackToLocalWhenFail: true
         }
       };
