@@ -428,10 +428,7 @@ public class GatewayFlowRuleController {
             return Result.ofThrowable(-1, throwable);
         }
 
-//        if (!publishRules(app, entity.getIp(), entity.getPort())) {
-//            logger.warn("publish gateway flow rules fail after update");
-//        }
-
+        publishRules(app);
         return Result.ofSuccess(entity);
     }
 

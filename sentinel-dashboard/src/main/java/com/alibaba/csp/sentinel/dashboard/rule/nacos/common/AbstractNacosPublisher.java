@@ -6,6 +6,7 @@ import com.alibaba.csp.sentinel.dashboard.rule.nacos.NacosConfigUtil;
 import com.alibaba.csp.sentinel.datasource.Converter;
 import com.alibaba.csp.sentinel.util.AssertUtil;
 import com.alibaba.nacos.api.config.ConfigService;
+import com.alibaba.nacos.api.config.ConfigType;
 import org.apache.commons.lang.math.RandomUtils;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public abstract class AbstractNacosPublisher<R>
 
         String dataId = postfix().dataId(app);
         boolean ok = configService.publishConfig(
-                dataId, NacosConfigUtil.GROUP_ID, encoder.convert(rules), "json");
+                dataId, NacosConfigUtil.GROUP_ID, encoder.convert(rules), ConfigType.JSON.getType());
         if (!ok) {
             throw new RuntimeException("Publish nacos config failed");
         }
