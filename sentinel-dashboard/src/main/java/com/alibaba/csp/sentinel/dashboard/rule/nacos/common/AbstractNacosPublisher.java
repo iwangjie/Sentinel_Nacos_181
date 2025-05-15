@@ -6,12 +6,9 @@ import com.alibaba.csp.sentinel.dashboard.rule.nacos.NacosConfigUtil;
 import com.alibaba.csp.sentinel.datasource.Converter;
 import com.alibaba.csp.sentinel.util.AssertUtil;
 import com.alibaba.nacos.api.config.ConfigService;
-import com.alibaba.nacos.api.config.listener.Listener;
+import org.apache.commons.lang.math.RandomUtils;
 
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 抽象父类：封装发布逻辑 & ACK 监听
@@ -42,39 +39,12 @@ public abstract class AbstractNacosPublisher<R>
 
         String dataId = postfix().dataId(app);
         boolean ok = configService.publishConfig(
-                dataId, NacosConfigUtil.GROUP_ID, encoder.convert(rules));
-//
-//        if (!ok || !latch.await(10, TimeUnit.SECONDS)) {
-//            throw new RuntimeException("Publish " + dataId + " timeout, please retry.");
-//        }
+                dataId, NacosConfigUtil.GROUP_ID, encoder.convert(rules), "json");
+        if (!ok) {
+            throw new RuntimeException("Publish nacos config failed");
+        }
 
-//        CountDownLatch latch = new CountDownLatch(1);
-//
-//        Listener listener = new Listener() {
-//            @Override
-//            public Executor getExecutor() {
-//                return null;
-//            }
-//
-//            @Override
-//            public void receiveConfigInfo(String config) {
-//                latch.countDown();
-//            }
-//        };
+        Thread.sleep(1000 + RandomUtils.nextInt(2000));
 
-//        try {
-//            // 先注册监听，再发布
-//            configService.addListener(dataId, NacosConfigUtil.GROUP_ID, listener);
-//
-//            boolean ok = configService.publishConfig(
-//                    dataId, NacosConfigUtil.GROUP_ID, encoder.convert(rules));
-//
-//            if (!ok || !latch.await(10, TimeUnit.SECONDS)) {
-//                throw new RuntimeException("Publish " + dataId + " timeout, please retry.");
-//            }
-//        } finally {
-//            // 防止 Listener 泄漏
-//            configService.removeListener(dataId, NacosConfigUtil.GROUP_ID, listener);
-//        }
     }
 }
