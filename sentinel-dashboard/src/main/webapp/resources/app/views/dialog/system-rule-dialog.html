@@ -34,6 +34,26 @@
                 <input type="radio" name="grade" value="4" checked ng-model='currentRule.grade' ng-disabled="systemRuleDialog.type == 'edit'" />&nbsp;CPU 使用率&nbsp;&nbsp;
 
               </div>
+
+              <!-- Tips区域 -->
+              <div style="margin-top: 8px; padding: 8px; border: 1px solid #eee; border-radius: 4px; background-color: #f9f9f9;" ng-cloak>
+                <small class="text-muted" ng-if="currentRule.grade == 0">
+                  <strong>LOAD:</strong> LOAD 指的是参与调度的进程或者线程（处于 running 或 runnable 队列，以及不可中断 I/O 阻塞状态）的平均数量。它既反映了 CPU 忙不忙，也反映了 I/O 是否拥堵，超过此阈值后，后续的请求会被快速失败。阈值类型为正整数。
+                </small>
+                <small class="text-muted" ng-if="currentRule.grade == 1">
+                  <strong>RT:</strong> 当指定资源的平均响应时间（单位毫秒）超过此阈值后，后续的请求会被快速失败。阈值类型为正整数。
+                </small>
+                <small class="text-muted" ng-if="currentRule.grade == 2">
+                  <strong>线程数:</strong> 当指定资源的并发线程数超过此阈值后，后续的请求会被快速失败。阈值类型为正整数。
+                </small>
+                <small class="text-muted" ng-if="currentRule.grade == 3">
+                  <strong>入口 QPS:</strong> 当指定资源的每秒请求数（QPS）超过此阈值后，后续的请求会被快速失败。阈值类型为正整数。
+                </small>
+                <small class="text-muted" ng-if="currentRule.grade == 4">
+                  <strong>CPU 使用率:</strong> 当系统 CPU 使用率超过此阈值（0.0-1.0，对应 0% - 100%）后，资源的请求会被快速失败。阈值类型为 0 到 1 之间的小数。
+                </small>
+              </div>
+              <!-- Tips区域结束 -->
             </div>
           </div>
           <div class="form-group">
