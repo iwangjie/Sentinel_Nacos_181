@@ -15,20 +15,22 @@
  */
 package com.alibaba.csp.sentinel.slots.system;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
-import java.util.concurrent.TimeUnit;
-
 import com.alibaba.csp.sentinel.Constants;
 import com.alibaba.csp.sentinel.log.RecordLog;
 import com.alibaba.csp.sentinel.util.StringUtil;
-
 import com.sun.management.OperatingSystemMXBean;
+import oshi.SystemInfo;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author jialiang.linjl
  */
 public class SystemStatusListener implements Runnable {
+    private static final SystemInfo SYS_INFO = new SystemInfo();
+    private static final int NODE_CPUS = SYS_INFO.getHardware().getProcessor().getPhysicalProcessorCount();
 
     volatile double currentLoad = -1;
     volatile double currentCpuUsage = -1;
@@ -50,7 +52,10 @@ public class SystemStatusListener implements Runnable {
     public void run() {
         try {
             OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
-            currentLoad = osBean.getSystemLoadAverage();
+            // load average < number of CPU cores: generally considered to be a healthy state. The CPU has plenty of spare power to handle the task.
+            // load average ≈ number of CPU cores: The system is being fully utilized. If the load fluctuates near this value, it is also usually acceptable.
+            // load average > Number of CPU cores: The system is overloaded. This means that there are processes waiting for the CPU, and this latency will affect system performance.
+            currentLoad = osBean.getSystemLoadAverage() / NODE_CPUS;
 
             /*
              * Java Doc copied from {@link OperatingSystemMXBean#getSystemCpuLoad()}:</br>
@@ -76,7 +81,7 @@ public class SystemStatusListener implements Runnable {
 
             currentCpuUsage = Math.max(processCpuUsage, systemCpuUsage);
 
-            if (currentLoad > SystemRuleManager.getSystemLoadThreshold()) {
+            if (currentLoad > SystemRuleManager.getSystemLoadThreshold() || currentCpuUsage > SystemRuleManager.getCpuUsageThreshold()) {
                 writeSystemStatusLog();
             }
         } catch (Throwable e) {
