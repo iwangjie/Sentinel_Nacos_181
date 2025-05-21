@@ -85,8 +85,8 @@ public class SimpleMachineDiscovery implements MachineDiscovery, InitializingBea
 
                     // 当前时间
                     long currentTime = System.currentTimeMillis();
-                    // 3小时的毫秒数
-                    long threeHoursInMs = 3 * 60 * 60 * 1000;
+                    // 1小时的毫秒数
+                    long threeHoursInMs = 1 * 60 * 60 * 1000;
 
                     // 需要移除的机器信息列表
                     List<MachineInfo> toRemoveMachines = new ArrayList<>();
