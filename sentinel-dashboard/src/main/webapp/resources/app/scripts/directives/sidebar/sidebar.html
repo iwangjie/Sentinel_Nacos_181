@@ -18,11 +18,11 @@
       <li ng-class="{active: true}" ng-repeat="entry in apps | filter: { app: searchApp }">{{dropDown}}
         <a href="javascript:void(0);" ng-click="click($event)" collapse="{{collpaseall == 1}}" style="font-size: 13px;word-break: break-word;">
           &nbsp;{{entry.app}}
+          <span ng-if="entry.isGateway" class="glyphicon glyphicon-cloud" style="font-size: 12px; margin-left: 4px;" title="逻辑网关"></span>
           <span class="node-count">({{entry.healthyCount}}/{{entry.machines.length}})</span>
           <span class="fa arrow"></span>
         </a>
 
-        <!--<ul class="nav nav-second-level" collapse="{{entry.active}}" style="display: none;">-->
         <ul class="nav nav-second-level" ng-show="entry.active">
           <li ui-sref-active="active">
             <a ui-sref="dashboard.metric({app: entry.app})">
@@ -38,11 +38,6 @@
             <a ui-sref="dashboard.gatewayIdentity({app: entry.app})">
               <i class="glyphicon glyphicon-filter"></i>&nbsp;&nbsp;请求链路</a>
           </li>
-
-<!--          <li ui-sref-active="active" ng-if="entry.appType==0">-->
-<!--            <a ui-sref="dashboard.flow({app: entry.app})">-->
-<!--              <i class="glyphicon glyphicon-filter"></i>&nbsp;&nbsp;流控规则(Nacos)</a>-->
-<!--          </li>-->
 
           <li ui-sref-active="active" ng-if="entry.isGateway">
             <a ui-sref="dashboard.gatewayApi({app: entry.app})">
@@ -84,7 +79,6 @@
               <i class="glyphicon glyphicon-th-list"></i>&nbsp;&nbsp;机器列表</a>
           </li>
         </ul>
-        <!-- /.nav-second-level -->
       </li>
     </ul>
   </div>
