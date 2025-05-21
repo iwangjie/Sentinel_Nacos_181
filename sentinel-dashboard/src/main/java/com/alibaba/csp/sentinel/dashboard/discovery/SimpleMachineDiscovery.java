@@ -80,14 +80,9 @@ public class SimpleMachineDiscovery implements MachineDiscovery, InitializingBea
         Thread cleanTask = new Thread(() -> {
             while (true) {
                 try {
-                    // 每隔30分钟执行一次清理
-                    Thread.sleep(30 * 60 * 1000);
-
-                    // 当前时间
+                    Thread.sleep(5 * 60 * 1000);
                     long currentTime = System.currentTimeMillis();
-                    // 1小时的毫秒数
-                    long threeHoursInMs = 1 * 60 * 60 * 1000;
-
+                    long threeHoursInMs = 20 * 60 * 1000;
                     // 需要移除的机器信息列表
                     List<MachineInfo> toRemoveMachines = new ArrayList<>();
 
