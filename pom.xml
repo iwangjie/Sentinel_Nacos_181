@@ -71,6 +71,7 @@
         <module>sentinel-core</module>
         <module>sentinel-extension</module>
         <module>sentinel-transport</module>
+        <module>sentinel-product</module>
         <module>sentinel-adapter</module>
         <module>sentinel-cluster</module>
         <module>sentinel-logging</module>
