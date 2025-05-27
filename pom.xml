@@ -330,7 +330,7 @@
             </distributionManagement>
         </profile>
         <profile>
-            <id>prod</id>
+            <id>release</id>
             <distributionManagement>
                 <snapshotRepository>
                     <id>snapshots</id>
