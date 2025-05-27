@@ -19,7 +19,7 @@ body {
     top: 51px; /* Height of the navbar */
     bottom: 0;
     left: 0;
-    width: 220px; /* Keep original width */
+    width: 250px; /* Keep original width */
     background-color: #343a40; /* Dark sidebar background */
     overflow-y: auto; /* Allow scrolling if content overflows */
     padding-top: 10px;
@@ -115,13 +115,11 @@ body {
 /* --- Node Count --- */
 /* Ensure class="node-count" exists on the span in HTML */
 .sidebar .nav > li > a .node-count {
-    font-size: 0.8em;
-    color: rgba(255, 255, 255, 0.6); /* Slightly more visible than before */
+    margin-left: auto;
+    margin-right: 8px;
+    font-size: 85%;
+    color: #c5dafd;
     white-space: nowrap;
-    margin-right: 5px; /* Space before the arrow */
-    flex-shrink: 0;
-    /* margin-left: auto; REMOVED */
-    line-height: inherit; /* Align with icon */
 }
 
 /* --- Arrow --- */
@@ -137,7 +135,7 @@ body {
 /* --- Active State --- */
 .sidebar .nav > li.active > a {
     color: #ffffff;
-    background-color: var(--primary-color);
+    /*background-color: var(--primary-color);*/
 }
 /* Ensure text color contrasts in active state */
 .sidebar .nav > li.active > a .menu-text,
@@ -176,7 +174,6 @@ body {
     text-decoration: none;
 }
 
-.sidebar .nav > li.active > a,
 .sidebar .nav > li.active > a:hover,
 .sidebar .nav > li.active > a:focus {
     color: #ffffff;
@@ -246,7 +243,7 @@ body {
 #page-wrapper {
     position: relative; /* Changed from inherit */
     min-height: calc(100vh - 51px); /* Fill viewport height */
-    margin: 51px 0 0 220px; /* Account for navbar and sidebar */
+    margin: 51px 0 0 250px; /* Account for navbar and sidebar */
     padding: 20px 30px; /* Consistent padding */
     background-color: #f8f9fa; /* Match body background */
     border-left: none; /* No border needed with fixed sidebar */

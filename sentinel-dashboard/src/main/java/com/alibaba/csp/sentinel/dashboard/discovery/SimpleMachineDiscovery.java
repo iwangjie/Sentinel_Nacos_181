@@ -15,6 +15,10 @@
  */
 package com.alibaba.csp.sentinel.dashboard.discovery;
 
+import com.alibaba.csp.sentinel.util.AssertUtil;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -22,15 +26,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.alibaba.csp.sentinel.util.AssertUtil;
-
-import org.springframework.stereotype.Component;
-
 /**
  * @author leyou
  */
 @Component
-public class SimpleMachineDiscovery implements MachineDiscovery {
+public class SimpleMachineDiscovery implements MachineDiscovery, InitializingBean {
 
     private final ConcurrentMap<String, AppInfo> apps = new ConcurrentHashMap<>();
 
@@ -74,4 +74,46 @@ public class SimpleMachineDiscovery implements MachineDiscovery {
         apps.remove(app);
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        // 创建定时任务清理超过3小时未上报心跳的客户端
+        Thread cleanTask = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(5 * 60 * 1000);
+                    long currentTime = System.currentTimeMillis();
+                    long threeHoursInMs = 20 * 60 * 1000;
+                    // 需要移除的机器信息列表
+                    List<MachineInfo> toRemoveMachines = new ArrayList<>();
+
+                    // 遍历所有应用
+                    for (AppInfo appInfo : apps.values()) {
+                        for (MachineInfo machineInfo : appInfo.getMachines()) {
+                            // 检查最后心跳时间是否超过3小时
+                            if (currentTime - machineInfo.getLastHeartbeat() > threeHoursInMs) {
+                                toRemoveMachines.add(machineInfo);
+                            }
+                        }
+                    }
+
+                    // 移除过期的机器实例
+                    for (MachineInfo machineInfo : toRemoveMachines) {
+                        removeMachine(machineInfo.getApp(), machineInfo.getIp(), machineInfo.getPort());
+                    }
+
+                    if (!toRemoveMachines.isEmpty()) {
+                        System.out.println(String.format("[Machine Discovery] Removed %d machines that have not reported heartbeat for more than 3 hours",
+                                toRemoveMachines.size()));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        // 设置为守护线程
+        cleanTask.setDaemon(true);
+        cleanTask.setName("sentinel-dashboard-machine-discovery-clean-task");
+        cleanTask.start();
+    }
 }

@@ -117,4 +117,11 @@ public class ParamFlowRuleEntity extends AbstractRuleEntity<ParamFlowRule> {
     public ParamFlowClusterConfig getClusterConfig() {
         return rule.getClusterConfig();
     }
+
+
+    public static ParamFlowRuleEntity fromParamFlowRule(String app, String ip, Integer port, ParamFlowRule paramFlowRule) {
+        AssertUtil.notNull(paramFlowRule, "Param flow rule should not be null");
+        return fromAuthorityRule(app, ip, port, paramFlowRule);
+    }
+
 }

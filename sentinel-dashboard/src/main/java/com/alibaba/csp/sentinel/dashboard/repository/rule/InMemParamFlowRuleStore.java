@@ -33,7 +33,7 @@ public class InMemParamFlowRuleStore extends InMemoryRuleRepositoryAdapter<Param
 
     @Override
     protected long nextId() {
-        return UUID.randomUUID().toString().hashCode() & 0x7fffffff;
+        return System.nanoTime();
     }
 
     @Override

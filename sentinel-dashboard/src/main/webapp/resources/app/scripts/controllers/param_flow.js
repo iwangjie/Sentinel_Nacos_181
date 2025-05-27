@@ -164,9 +164,9 @@ angular.module('sentinelDashboardApp').controller('ParamFlowController', ['$scop
           durationInSec: 1,
           burstCount: 0,
           maxQueueingTimeMs: 0,
-          clusterMode: false,
+          clusterMode: true,
           clusterConfig: {
-            thresholdType: 0,
+            thresholdType: 1,
             fallbackToLocalWhenFail: true,
           }
         }

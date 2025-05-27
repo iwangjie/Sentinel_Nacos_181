@@ -6,13 +6,18 @@
     <parent>
         <groupId>com.alibaba.csp</groupId>
         <artifactId>sentinel-parent</artifactId>
-        <version>1.8.1</version>
+        <version>1.8.1-patch01-SNAPSHOT</version>
     </parent>
     <artifactId>sentinel-core</artifactId>
     <packaging>jar</packaging>
     <description>The core of Sentinel</description>
 
     <dependencies>
+        <dependency>
+            <groupId>com.github.oshi</groupId>
+            <artifactId>oshi-core</artifactId>
+            <version>6.8.0</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

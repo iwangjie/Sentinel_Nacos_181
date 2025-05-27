@@ -10,11 +10,11 @@
             <div class="col-sm-9">
               <div class="form-control" ng-if="systemRuleDialog.type == 'edit'" align="center">
                 <!--highestSystemLoad -->
-                <input type="radio" name="grade" value="0" checked ng-model='currentRule.grade' ng-disabled="systemRuleDialog.type == 'edit'" />&nbsp;LOAD&nbsp;&nbsp;
+                <input type="radio" name="grade" value="0" checked ng-model='currentRule.grade' ng-disabled="systemRuleDialog.type == 'edit'" />&nbsp;单核LOAD&nbsp;&nbsp;
                 <!--avgRt -->
                 <input type="radio" name="grade" value="1" ng-model='currentRule.grade' ng-disabled="systemRuleDialog.type == 'edit'" />&nbsp;RT&nbsp;&nbsp;
                 <!--maxThread -->
-                <input type="radio" name="grade" value="2" ng-model='currentRule.grade' ng-disabled="systemRuleDialog.type == 'edit'" />&nbsp;线程数&nbsp;&nbsp;
+                <input type="radio" name="grade" value="2" ng-model='currentRule.grade' ng-disabled="systemRuleDialog.type == 'edit'" />&nbsp;并发数&nbsp;&nbsp;
                 <!--qps -->
                 <input type="radio" name="grade" value="3" ng-model='currentRule.grade' ng-disabled="systemRuleDialog.type == 'edit'"/>&nbsp;入口 QPS&nbsp;&nbsp;
                 <!--highestCpuUsage -->
@@ -23,27 +23,47 @@
               </div>
               <div class="form-control highlight-border" ng-if="systemRuleDialog.type == 'add'" align="center">
                 <!--highestSystemLoad -->
-                <input type="radio" name="grade" value="0" ng-model='currentRule.grade' ng-disabled="systemRuleDialog.type == 'edit'" />&nbsp;LOAD&nbsp;&nbsp;
+                <input type="radio" name="grade" value="0" ng-model='currentRule.grade' ng-disabled="systemRuleDialog.type == 'edit'" />&nbsp;单核LOAD&nbsp;&nbsp;
                 <!--avgRt -->
                 <input type="radio" name="grade" value="1" ng-model='currentRule.grade' ng-disabled="systemRuleDialog.type == 'edit'" />&nbsp;RT&nbsp;&nbsp;
                 <!--maxThread -->
-                <input type="radio" name="grade" value="2" ng-model='currentRule.grade' ng-disabled="systemRuleDialog.type == 'edit'" />&nbsp;线程数&nbsp;&nbsp;
+                <input type="radio" name="grade" value="2" ng-model='currentRule.grade' ng-disabled="systemRuleDialog.type == 'edit'" />&nbsp;并发数&nbsp;&nbsp;
                 <!--qps -->
                 <input type="radio" name="grade" value="3" ng-model='currentRule.grade' ng-disabled="systemRuleDialog.type == 'edit'"/>&nbsp;入口 QPS&nbsp;&nbsp;
                 <!--highestCpuUsage -->
                 <input type="radio" name="grade" value="4" checked ng-model='currentRule.grade' ng-disabled="systemRuleDialog.type == 'edit'" />&nbsp;CPU 使用率&nbsp;&nbsp;
 
               </div>
+
+              <!-- Tips区域 -->
+              <div style="margin-top: 8px; padding: 8px; border: 1px solid #eee; border-radius: 4px; background-color: #f9f9f9;" ng-cloak>
+                <small class="text-muted" ng-if="currentRule.grade == 0">
+                <strong>LOAD:</strong> LOAD 指的是参与调度的进程或者线程（处于 running 或 runnable 队列，以及不可中断 I/O 阻塞状态）的平均数量。它既反映了 CPU 忙不忙，也反映了 I/O 是否拥堵，超过此阈值后，会结合 BBR 算法判断是否限流，通常建议填写2.5。。
+                </small>
+                <small class="text-muted" ng-if="currentRule.grade == 1">
+                  <strong>RT:</strong> 当指定资源的平均响应时间（单位毫秒）超过此阈值后，后续的请求会被快速失败。阈值类型为正整数，推荐值为 500～1000。
+                </small>
+                <small class="text-muted" ng-if="currentRule.grade == 2">
+                  <strong>并发数:</strong> 当指定资源的并发线程数超过此阈值后，后续的请求会被快速失败。阈值类型为正整数，根据压测值来判断。
+                </small>
+                <small class="text-muted" ng-if="currentRule.grade == 3">
+                  <strong>入口 QPS:</strong> 当指定资源的每秒请求数（QPS）超过此阈值后，后续的请求会被快速失败。阈值类型为正整数，根据压测值来判断。
+                </small>
+                <small class="text-muted" ng-if="currentRule.grade == 4">
+                  <strong>CPU 使用率:</strong> 当系统 CPU 使用率超过此阈值，资源的请求会被快速失败，推荐值为 0.75～0.85。
+                </small>
+              </div>
+              <!-- Tips区域结束 -->
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2 control-label">阈值</label>
             <div class="col-sm-9">
-              <input type='number' min="0" class="form-control highlight-border" ng-model='currentRule.highestSystemLoad' placeholder="[0, ~)的正整数" ng-if="currentRule.grade == 0"/>
+              <input type='number' min="0" class="form-control highlight-border" ng-model='currentRule.highestSystemLoad' placeholder="[0, ~)的正整数，推荐 2.5" ng-if="currentRule.grade == 0"/>
               <input type='number' min="0" class="form-control highlight-border" ng-model='currentRule.avgRt' placeholder="[0, ~)的正整数" ng-if="currentRule.grade == 1"/>
               <input type='number' min="0" class="form-control highlight-border" ng-model='currentRule.maxThread' placeholder="[0, ~)的正整数" ng-if="currentRule.grade == 2"/>
               <input type='number' min="0" class="form-control highlight-border" ng-model='currentRule.qps' placeholder="[0, ~)的正整数" ng-if="currentRule.grade == 3"/>
-              <input type='number' min="0" class="form-control highlight-border" ng-model='currentRule.highestCpuUsage' placeholder="[0, 1]的小数，代表百分比" ng-if="currentRule.grade == 4"/>
+              <input type='number' min="0" class="form-control highlight-border" ng-model='currentRule.highestCpuUsage' placeholder="[0, 1]的小数，代表百分比，推荐 0.85" ng-if="currentRule.grade == 4"/>
             </div>
           </div>
         </form>

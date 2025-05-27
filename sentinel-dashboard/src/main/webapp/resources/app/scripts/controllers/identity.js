@@ -52,9 +52,9 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
         controlBehavior: 0,
         resource: resource,
         limitApp: 'default',
-        clusterMode: false,
+        clusterMode: true,
         clusterConfig: {
-            thresholdType: 0
+            thresholdType: 1
         },
         app: $scope.app,
         ip: mac[0],
@@ -328,9 +328,9 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
                   durationInSec: 1,
                   burstCount: 0,
                   maxQueueingTimeMs: 0,
-                  clusterMode: false,
+                  clusterMode: true,
                   clusterConfig: {
-                      thresholdType: 0,
+                      thresholdType: 1,
                       fallbackToLocalWhenFail: true,
                   }
               }

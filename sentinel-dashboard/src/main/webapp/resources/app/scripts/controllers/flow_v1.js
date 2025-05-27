@@ -86,9 +86,9 @@ app.controller('FlowControllerV1', ['$scope', '$stateParams', 'FlowServiceV1', '
         ip: mac[0],
         port: mac[1],
         limitApp: 'default',
-        clusterMode: false,
+        clusterMode: true,
         clusterConfig: {
-          thresholdType: 0
+          thresholdType: 1
         }
       };
       $scope.flowRuleDialog = {

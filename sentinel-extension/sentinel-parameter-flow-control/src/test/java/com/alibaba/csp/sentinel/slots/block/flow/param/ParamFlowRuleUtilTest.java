@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.csp.sentinel.slots.block.RuleConstant;
+import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -13,6 +15,19 @@ import static org.junit.Assert.*;
  * @author Eric Zhao
  */
 public class ParamFlowRuleUtilTest {
+
+    @Test
+    public void testConfig() {
+        ParamFlowRule rule = new ParamFlowRule("merchant.api.common")
+                .setParamIdx(0)
+                .setGrade(RuleConstant.FLOW_GRADE_QPS)
+                //.setDurationInSec(3)
+                //.setControlBehavior(RuleConstant.CONTROL_BEHAVIOR_RATE_LIMITER)
+                //.setMaxQueueingTimeMs(600)
+                .setCount(5);
+        System.out.println(JSON.toJSONString(rule));
+    }
+
     @Test
     public void testCheckValidHotParamRule() {
         // Null or empty resource;
